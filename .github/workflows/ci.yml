@@ -2,3 +2,10 @@ name: CI
 
 on: 
     push:
+
+jobs:
+    tests:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Retriew code
+              uses: actions/checkout@v6
