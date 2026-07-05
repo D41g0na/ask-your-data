@@ -41,7 +41,5 @@ jobs:
             - name: Install dependencies
               run: uv sync --locked
             
-            - name: Launch tests
-              env:
-                
+            - name: Launch tests                
               run: uv run pytest -v
