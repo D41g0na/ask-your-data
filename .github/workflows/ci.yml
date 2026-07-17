@@ -9,7 +9,7 @@ jobs:
 
         services:
             postgres:
-                image: postgres:16
+                image: postgres:15
                 env:
                     POSTGRES_DB: ask_your_data_test
                     POSTGRES_USER: postgres
