@@ -14,7 +14,7 @@ def index_document(document_id: str, file_path: str) -> int:
     # Insert chunk into the database
     for chunk in chunks:
         insert_chunk(
-            chunk_id=chunk['chnunk_id'],
+            chunk_id=chunk['chunk_id'],
             document_id=chunk['document_id'],
             chunk_index=chunk['chunk_index'],
             page_start=chunk['page_number'],
