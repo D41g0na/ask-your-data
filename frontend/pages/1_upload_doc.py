@@ -75,7 +75,7 @@ if uploaded_file:
     if st.button("Save file"):
         try:
             document_id = str(uuid.uuid4())
-            file_path = INPUT_DATA_DIR / f"{document_id}_{uploaded_file.name}.pdf"
+            file_path = INPUT_DATA_DIR / f"{document_id}_{uploaded_file.name}"
 
             # Base metadata to be added to all documents
             base_metadata = {
