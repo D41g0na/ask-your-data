@@ -30,5 +30,7 @@ dev = [
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["test"]
+addopts = "--import-mode=importlib"
+
 [tool.mypy]
 [tool.ruff]
