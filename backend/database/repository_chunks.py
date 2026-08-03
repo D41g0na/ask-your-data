@@ -3,10 +3,11 @@ from psycopg.types.json import Json
 from .connection import get_connection
 
 
-def insert_chunk(
-    chunk_id, document_id, chunk_index, page_start, page_end, content, metadata
-):
-    """Insert a new chunk into the database."""
+def insert_chunks(chunks: list[dict]) -> int:
+    """Insert a batch of chunks into the database in a single transaction."""
+
+    if not chunks:
+        return 0
 
     query = """
         INSERT INTO chunks (
@@ -18,29 +19,22 @@ def insert_chunk(
             content,
             metadata
         )
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
-        RETURNING chunk_id;
+        VALUES (%s, %s, %s, %s, %s, %s, %s);
     """
 
-    values = (
-        chunk_id,
-        document_id,
-        chunk_index,
-        page_start,
-        page_end,
-        content,
-        Json(metadata),
-    )
+    values = [
+        (
+            c["chunk_id"],
+            c["document_id"],
+            c["chunk_index"],
+            c["page_start"],
+            c["page_end"],
+            c["content"],
+            Json(c.get("metadata", {})),
+        )
+        for c in chunks
+    ]
 
-    conn = get_connection()
-    try:
-        with conn.cursor() as cur:
-            cur.execute(query, values)
-            result = cur.fetchone()
-
-        conn.commit()
-
-        return str(result[0])
-
-    finally:
-        conn.close()
+    with get_connection() as conn, conn.cursor() as cur:
+        cur.executemany(query, values)
+        return cur.rowcount

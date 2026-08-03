@@ -1,7 +1,7 @@
 from .connection import get_connection
 
 
-def create_documents_table():
+def create_documents_table() -> None:
     """Create the documents table in the database if it doesn't exist."""
 
     query = """
@@ -14,17 +14,11 @@ def create_documents_table():
         );
     """
 
-    conn = get_connection()
-
-    try:
-        with conn.cursor() as cur:
-            cur.execute(query)
-        conn.commit()
-    finally:
-        conn.close()
+    with get_connection() as conn, conn.cursor() as cur:
+        cur.execute(query)
 
 
-def create_chunks_table():
+def create_chunks_table() -> None:
     """Create the chunk table in the database if it doesn't exist."""
 
     query = """
@@ -40,14 +34,8 @@ def create_chunks_table():
         );
     """
 
-    conn = get_connection()
-
-    try:
-        with conn.cursor() as cur:
-            cur.execute(query)
-        conn.commit()
-    finally:
-        conn.close()
+    with get_connection() as conn, conn.cursor() as cur:
+        cur.execute(query)
 
 
 if __name__ == "__main__":
