@@ -2,6 +2,10 @@ import uuid
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def split_text_into_chunks(document_id, pages, chunk_size=500, chunk_overlap=100):
     """Split extracted PDF pages into overlapping text chunks."""
@@ -41,5 +45,13 @@ def split_text_into_chunks(document_id, pages, chunk_size=500, chunk_overlap=100
             )
 
             chunk_index += 1
+
+        logger.info(
+            "Split %s pages into %s chunks (size: %s, overlap=%s)",
+            len(pages),
+            len(chunks),
+            chunk_size,
+            chunk_overlap,
+        )
 
     return chunks

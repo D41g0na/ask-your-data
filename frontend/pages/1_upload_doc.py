@@ -4,9 +4,13 @@ from pathlib import Path
 
 import streamlit as st
 from utils.metadata_utils import clean_metadata, validate_metadata
+from backend.logging_config import setup_logging
 
 from backend.database.repository_document import insert_document
 from backend.ingestion.pipeline import index_document
+
+setup_logging()
+logger = logging.getLogger(__name__)
 
 
 st.title("Upload documents")
@@ -71,16 +75,15 @@ for i in range(nb_metadata):
 # Save the uploaded file and its metadata in the database
 if uploaded_file:
     if st.button("Save file"):
-        try:
-            document_id = str(uuid.uuid4())
-            file_path = INPUT_DATA_DIR / f"{document_id}_{uploaded_file.name}"
+        document_id = str(uuid.uuid4())
+        file_path = INPUT_DATA_DIR / f"{document_id}_{uploaded_file.name}"
 
+        try:
             # Base metadata to be added to all documents
             base_metadata = {
                 "source": uploaded_file.name,
                 "uploaded_at": datetime.now().isoformat(),
             }
-
             final_metadata = {**base_metadata, **added_metadata}
 
             with open(file_path, "wb") as f:
@@ -96,7 +99,17 @@ if uploaded_file:
             nb_chunks = index_document(document_id, str(file_path))
 
         except Exception as e:
+            logger.exception(
+                "Ingestion failed for document_id=%s file=%s",
+                document_id,
+                uploaded_file.name
+            )
             st.error(f"An error occurred while saving the document: {e}")
         else:
+            logger.info("Ingester document_id=%s into %d chunks", document_id, nb_chunks)
             st.success(f"Document saved in database with ID: {document_id}")
-            st.success(f"Document indexed into {nb_chunks} chunks.")
+
+            if nb_chunks == 0:
+                st.warning("No text could be extracted. Is this a scanned PDF?")
+            else:
+                st.success(f"Document indexed into {nb_chunks} chunks.")

@@ -1,6 +1,11 @@
 from pathlib import Path
 
+from backend.logging_config import setup_logging
+
 import streamlit as st
+
+setup_logging()
+logger = logging.getLogger(__name__)
 
 BASE_DIR = Path(__file__).parent
 LOGO_PATH = BASE_DIR / "ask_your_data.png"

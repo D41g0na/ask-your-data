@@ -2,6 +2,10 @@ from psycopg.types.json import Json
 
 from .connection import get_connection
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def insert_document(document_id: str, filename: str, file_path: str, metadata: dict) -> int:
     """Insert a new document into the database."""
