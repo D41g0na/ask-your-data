@@ -8,9 +8,6 @@ from utils.metadata_utils import clean_metadata, validate_metadata
 from backend.database.repository_document import insert_document
 from backend.ingestion.pipeline import index_document
 
-# ROOT_DIR = Path(__file__).resolve().parents[2]
-# sys.path.insert(0, str(ROOT_DIR))
-
 
 st.title("Upload documents")
 st.write("Add metadata to your documents. Metadata improves search and filtering.")
@@ -41,6 +38,7 @@ base_metadata = {}
 added_metadata = {}
 reserved_keys = {
     "source",
+    "language",
     "uploaded_at",
     "page",
     "chunk_id",
