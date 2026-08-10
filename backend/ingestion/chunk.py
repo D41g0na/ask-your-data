@@ -17,6 +17,7 @@ def split_text_into_chunks(document_id, pages, chunk_size=500, chunk_overlap=100
     for page in pages:
         page_number = page["page"]
         text = page["text"]
+        page_language = page.get("language")
 
         if not text.strip():
             continue  # Skip empty pages
@@ -35,6 +36,7 @@ def split_text_into_chunks(document_id, pages, chunk_size=500, chunk_overlap=100
                     "page_start": page_number,
                     "page_end": page_number,
                     "content": chunk_text,
+                    "language": page_language,
                 }
             )
 
