@@ -26,6 +26,7 @@ def create_chunks_table() -> None:
             chunk_id UUID PRIMARY KEY,
             document_id UUID NOT NULL REFERENCES documents(document_id) ON DELETE CASCADE,
             chunk_index INTEGER NOT NULL,
+            language TEXT NOT NULL,
             page_start INTEGER NOT NULL,
             page_end INTEGER NOT NULL,
             content TEXT NOT NULL,
@@ -37,7 +38,19 @@ def create_chunks_table() -> None:
     with get_connection() as conn, conn.cursor() as cur:
         cur.execute(query)
 
+def alter_chunks_table_add_language() -> None:
+    """Alter the chunks table to add a language column if it doesn't exist."""
+
+    query = """
+        ALTER TABLE chunks
+        ADD COLUMN IF NOT EXISTS language TEXT NOT NULL DEFAULT 'unknown';
+    """
+
+    with get_connection() as conn, conn.cursor() as cur:
+        cur.execute(query)
+
 
 if __name__ == "__main__":
-    create_documents_table()
-    create_chunks_table()
+    #create_documents_table()
+    #create_chunks_table()
+    alter_chunks_table_add_language()

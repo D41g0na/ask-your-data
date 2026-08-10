@@ -17,9 +17,10 @@ def insert_chunks(chunks: list[dict]) -> int:
             page_start,
             page_end,
             content,
-            metadata
+            metadata,
+            language
         )
-        VALUES (%s, %s, %s, %s, %s, %s, %s);
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
     """
 
     values = [
@@ -31,6 +32,7 @@ def insert_chunks(chunks: list[dict]) -> int:
             c["page_end"],
             c["content"],
             Json(c.get("metadata", {})),
+            c["language"],
         )
         for c in chunks
     ]
