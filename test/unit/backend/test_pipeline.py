@@ -28,6 +28,7 @@ def test_index_document(
             "page_start": 1,
             "page_end": 1,
             "content": "Premier chunk",
+            "language": "fr",
         }
     ]
 
