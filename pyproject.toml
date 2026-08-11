@@ -14,9 +14,13 @@ dependencies = [
     "langdetect>=1.0.9",
     "loguru>=0.7.3",
     "mypy>=2.1.0",
+    "psycopg-pool>=3.3.1",
     "psycopg[binary]>=3.3.4",
+    "pydantic>=2.13.3",
+    "pydantic-settings>=2.14.0",
     "pymupdf>=1.27.2.3",
     "pytest>=9.0.3",
+    "python-dotenv>=1.2.2",
     "streamlit>=1.56.0",
 ]
 
@@ -34,7 +38,10 @@ testpaths = ["test"]
 addopts = "--import-mode=importlib"
 
 [tool.mypy]
+plugins = ["pydantic.mypy"]
+
 [[tool.mypy.overrides]]
 module = ["langdetect.*"]
-ignore_missing_import = true
+ignore_missing_imports = true
+
 [tool.ruff]
