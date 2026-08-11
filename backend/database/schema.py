@@ -38,12 +38,13 @@ def create_chunks_table() -> None:
     with get_connection() as conn, conn.cursor() as cur:
         cur.execute(query)
 
+
 def alter_chunks_table_add_language() -> None:
     """Alter the chunks table to add a language column if it doesn't exist."""
 
     query = """
         ALTER TABLE chunks
-        ADD COLUMN IF NOT EXISTS language TEXT NOT NULL DEFAULT 'unknown';
+        ADD COLUMN IF NOT EXISTS language TEXT NOT NULL;
     """
 
     with get_connection() as conn, conn.cursor() as cur:
@@ -51,6 +52,6 @@ def alter_chunks_table_add_language() -> None:
 
 
 if __name__ == "__main__":
-    #create_documents_table()
-    #create_chunks_table()
+    # create_documents_table()
+    # create_chunks_table()
     alter_chunks_table_add_language()
