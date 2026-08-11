@@ -1,8 +1,8 @@
+import logging
+
 from backend.database.repository_chunks import insert_chunks
 from backend.ingestion.chunk import split_text_into_chunks
 from backend.ingestion.extract import extract_text_from_pdf
-
-import logging
 
 logger = logging.getLogger(__name__)
 

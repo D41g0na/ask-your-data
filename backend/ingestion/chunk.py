@@ -1,8 +1,7 @@
+import logging
 import uuid
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-
-import logging
 
 logger = logging.getLogger(__name__)
 

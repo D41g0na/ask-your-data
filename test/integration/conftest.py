@@ -1,10 +1,13 @@
 import uuid
 
 import pytest
+from dotenv import load_dotenv
 
 from backend.database.connection import get_connection
 from backend.database.repository_document import insert_document
 from backend.database.schema import create_chunks_table, create_documents_table
+
+load_dotenv()
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -13,9 +16,7 @@ def initialize_test_database():
     create_chunks_table()
 
     with get_connection() as conn, conn.cursor() as cur:
-        cur.execute(
-            "TRUNCATE documents CASCADE;"
-        )
+        cur.execute("TRUNCATE documents CASCADE;")
 
 
 @pytest.fixture
@@ -31,12 +32,12 @@ def document_id():
 
     yield document_id
 
-
     with get_connection() as conn, conn.cursor() as cur:
         cur.execute(
             " DELETE FROM documents WHERE document_id = %s",
             (document_id,),
         )
+
 
 @pytest.fixture
 def created_documents():
@@ -46,6 +47,5 @@ def created_documents():
 
     with get_connection() as conn, conn.cursor() as cur:
         cur.executemany(
-            " DELETE FROM documents WHERE document_id = %s",
-            [(i,) for i in ids]
+            " DELETE FROM documents WHERE document_id = %s", [(i,) for i in ids]
         )

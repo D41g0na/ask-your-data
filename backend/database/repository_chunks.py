@@ -1,8 +1,8 @@
+import logging
+
 from psycopg.types.json import Json
 
 from .connection import get_connection
-
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -11,7 +11,9 @@ def insert_chunks(chunks: list[dict]) -> int:
     """Insert a batch of chunks into the database in a single transaction."""
 
     if not chunks:
-        logger.warning("insert_chnuks called with an empty chunk_list - nothing inserted")
+        logger.warning(
+            "Insert_chunks called with an empty chunk_list - nothing inserted"
+        )
         return 0
 
     query = """
