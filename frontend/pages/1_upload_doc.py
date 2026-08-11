@@ -1,13 +1,14 @@
+import logging
 import uuid
 from datetime import datetime
 from pathlib import Path
 
 import streamlit as st
-from utils.metadata_utils import clean_metadata, validate_metadata
-from backend.logging_config import setup_logging
+from frontend.utils.metadata_utils import clean_metadata, validate_metadata
 
 from backend.database.repository_document import insert_document
 from backend.ingestion.pipeline import index_document
+from backend.logging_config import setup_logging
 
 setup_logging()
 logger = logging.getLogger(__name__)
@@ -39,7 +40,7 @@ st.info(
 
 # Metadata management
 base_metadata = {}
-added_metadata = {}
+added_metadata: dict[str, str] = {}
 reserved_keys = {
     "source",
     "language",
@@ -102,11 +103,13 @@ if uploaded_file:
             logger.exception(
                 "Ingestion failed for document_id=%s file=%s",
                 document_id,
-                uploaded_file.name
+                uploaded_file.name,
             )
             st.error(f"An error occurred while saving the document: {e}")
         else:
-            logger.info("Ingester document_id=%s into %d chunks", document_id, nb_chunks)
+            logger.info(
+                "Ingester document_id=%s into %d chunks", document_id, nb_chunks
+            )
             st.success(f"Document saved in database with ID: {document_id}")
 
             if nb_chunks == 0:

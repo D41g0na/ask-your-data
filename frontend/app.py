@@ -1,8 +1,13 @@
+import logging
 from pathlib import Path
+
+import streamlit as st
+from dotenv import load_dotenv
 
 from backend.logging_config import setup_logging
 
-import streamlit as st
+load_dotenv()
+
 
 setup_logging()
 logger = logging.getLogger(__name__)
