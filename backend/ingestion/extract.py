@@ -1,12 +1,12 @@
+import logging
+
 import pymupdf
-from langdetect import detect, DetectorFactory
+from langdetect import DetectorFactory, detect
 from langdetect.lang_detect_exception import LangDetectException
-from logging
 
 DetectorFactory.seed = 0
 
 logger = logging.getLogger(__name__)
-
 
 
 def extract_text_from_pdf(pdf_path: str) -> list[dict]:
@@ -36,7 +36,7 @@ def extract_text_from_pdf(pdf_path: str) -> list[dict]:
                 pdf_path,
                 len(text),
             )
-            
+
         extract.append({"page": page.number + 1, "text": text, "language": language})
 
     doc.close()
