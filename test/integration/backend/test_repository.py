@@ -5,9 +5,8 @@ from backend.database.repository_chunks import insert_chunks
 from backend.database.repository_document import insert_document
 
 
-def test_insert_document(created_documents):
+def test_insert_document():
     document_id = str(uuid.uuid4())
-    created_documents.append(document_id)
 
     rows_inserted = insert_document(
         document_id,
