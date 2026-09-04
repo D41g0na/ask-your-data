@@ -19,6 +19,23 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  # PostgreSQL for test
+  postgres_test:
+    profiles: ["test"]
+    healthcheck: 
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    image: postgres:15
+    container_name: ask-your-data-postgres-test
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ask_your_data_test
+    ports:
+      - "5433:5432"
   # Volume for PostgreSQL data persistence
 volumes:
   postgres_data:
