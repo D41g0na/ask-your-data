@@ -4,11 +4,11 @@ from datetime import datetime
 from pathlib import Path
 
 import streamlit as st
-from frontend.utils.metadata_utils import clean_metadata, validate_metadata
 
 from backend.database.repository_document import insert_document
 from backend.ingestion.pipeline import index_document
 from backend.logging_config import setup_logging
+from frontend.utils.metadata_utils import clean_metadata, validate_metadata
 
 setup_logging()
 logger = logging.getLogger(__name__)

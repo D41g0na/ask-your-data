@@ -2,7 +2,6 @@ import logging
 from collections.abc import Generator
 from contextlib import contextmanager
 
-
 from psycopg import Connection
 from psycopg_pool import ConnectionPool
 
