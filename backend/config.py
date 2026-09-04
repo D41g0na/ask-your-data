@@ -1,8 +1,9 @@
 from functools import lru_cache
 from pathlib import Path
+from urllib.parse import quote_plus
 
 from psycopg.conninfo import make_conninfo
-from pydantic import SecretStr, Field
+from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -32,6 +33,11 @@ class DatabaseSettings(BaseSettings):
             user=self.user,
             password=self.password.get_secret_value(),
         )
+
+    @property
+    def sqlalchemy_url(self) -> str:
+        """Return a DSN SQLAlchemy for Alembic, value may contain password in clear, but never log it or print it."""
+        return f"postgresql+psycopg://{quote_plus(self.user)}:{quote_plus(self.password.get_secret_value())}@{self.host}:{self.port}/{self.dbname}"
 
 
 @lru_cache(maxsize=1)
